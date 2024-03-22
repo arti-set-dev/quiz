@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../dist/quiz.min.css">
+	<title>Quiz demo</title>
+</head>
+
+<body>
+	<style>
+		html {
+			box-sizing: border-box;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: inherit;
+		}
+
+		body {
+			padding: 0;
+			margin: 0;
+		}
+
+		.quiz {
+			max-width: 700px;
+			margin: 0 auto;
+		}
+
+		.quiz__input.error {
+			outline: 1px solid red;
+		}
+	</style>
+
+	<body>
+		<form method="post" class="quiz">
+			<div class="quiz__progress" data-quiz-progress></div>
+		</form>
+	</body>
+	<script src="../dist/quiz.min.js"></script>
+	<script>
+		const quizData = [{
+			number: 1,
+			title: "На какую сумму вы рассчитываете?",
+			answer_alias: "money",
+			answers: [{
+				answer_title: "500 рублей",
+				classes: 'req',
+				type: "checkbox"
+			},
+			{
+				answer_title: "5000 рублей",
+				type: "checkbox"
+			},
+			{
+				answer_title: "Введу текстом",
+				type: "text",
+			}
+			]
+		},
+		{
+			number: 2,
+			title: "Какой именно вам нужен сайт?",
+			answer_alias: "great",
+			answers: [{
+				answer_title: "Лендинг-пейдж",
+				type: "radio"
+			},
+			{
+				answer_title: "Корпоративный сайт",
+				type: "radio"
+			},
+			{
+				answer_title: "Интернет-магазин",
+				type: "radio"
+			}
+			]
+		},
+		{
+			number: 3,
+			title: "Уточните детали реализации",
+			answer_alias: "details",
+			answers: [{
+				answer_title: "детали реализации",
+				type: "text"
+			},
+			]
+		},
+		{
+			number: 4,
+			title: "На какую сумму вы рассчитываете?",
+			answer_alias: "money",
+			answers: [{
+				answer_title: "500 рублей",
+				type: "checkbox"
+			},
+			{
+				answer_title: "5000 рублей",
+				type: "checkbox"
+			},
+			{
+				answer_title: "Введу текстом",
+				type: "text"
+			}
+			]
+		},
+		{
+			number: 5,
+			title: "Вы успешно ответили на все вопросы",
+			desc: 'Выберете удобный способ связи и мы свяжемся с вами в ближайшее время',
+		},
+		];
+
+		const quizTemplate = (quizData) => {
+			const template = quizData?.map(question => {
+				const { number, title, answer_alias } = question;
+				const answers = question.answers?.map(answer => {
+					const { answer_title, type } = answer;
+					return `
+
+      <label class="quiz__label">
+        <span>${answer_title}</span>
+        <input type="${type}" name="${answer_alias}" value="${type !== 'text' ? answer_title : ''}" class="quiz__input">
+      </label>
+
+		`;
+				})
+				return `
+    <div class="quiz__content">
+      <div class="quiz__numbers">${number} / ${quizData.length}</div>
+      <div class="quiz__head">
+        <span class="quiz__content-text">${title}</span>
+        ${number === quizData.length ? '<span class="quiz__content-text">Выберете удобный способ связи и мы свяжемся с вами в ближайшее время</span>' : ''}
+      </div>
+      <div class="quiz__labels">
+        ${number !== quizData.length ?
+						`${answers?.join('')}` :
+						` <label class="quiz__label">
+            <span>Telegram</span>
+            <input type="radio" name="feedback" value="Telegram" class="quiz__input">
+          </label>
+          <label class="quiz__label">
+            <span>Whatsapp</span>
+            <input type="radio" name="feedback" value="Whatsapp" class="quiz__input">
+          </label>
+          <label class="quiz__label">
+            <span>Phone</span>
+            <input type="radio" name="feedback" value="Phone" class="quiz__input">
+          </label>
+          <input type="tel" name="feedback" class="quiz__input req" placeholder="+7 999 999 99 99">`}
+      </div>
+      <div class="quiz__nav">
+        ${number !== 1 && number !== quizData.length ? '<button type="button" class="quiz__btn" data-quiz-prev>Предыдущий</button>' : ''}
+        ${number !== quizData.length ?
+						'<button type="button" class="quiz__btn" data-quiz-next>Следующий</button>' :
+						'<button type="submit" class="quiz__btn" data-quiz-send>Отправить</button>'}
+      </div>
+    </div>
+    `
+			})
+
+			return template;
+		}
+	</script>
+	<script>
+		const quiz = new Quiz('.quiz', quizTemplate(quizData));
+	</script>
+</body>
+
+</html>

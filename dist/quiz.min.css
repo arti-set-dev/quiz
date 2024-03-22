@@ -1,0 +1,36 @@
+:root {
+  --quiz-progress: 25%;
+}
+
+.quiz {
+  border: 1px solid black;
+}
+.quiz__head {
+  margin-bottom: 30px;
+}
+.quiz__content.hidden {
+  display: none;
+}
+.quiz__content-text {
+  display: block;
+}
+.quiz__progress {
+  border: 1px solid black;
+  position: relative;
+  width: 100%;
+  height: 10px;
+}
+.quiz__progress.hide {
+  display: none;
+}
+.quiz__progress:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  height: 100%;
+  transition: width 0.3s ease;
+  width: var(--quiz-progress);
+}
