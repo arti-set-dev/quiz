@@ -1,5 +1,5 @@
 {
-  "name": "r-quiz",
+  "name": "r-dev-quiz",
   "version": "1.0.0",
   "description": "Simple JS Library for quiz",
   "main": "src/quiz.js",
